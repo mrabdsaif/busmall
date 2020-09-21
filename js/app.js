@@ -5,6 +5,11 @@ var allProducts = [];
 var leftproductElement = document.getElementById('firstproduct');
 var middleproductElement = document.getElementById('secondtproduct');
 var rightproductElement = document.getElementById('thirdproduct');
+
+var firstindex;
+var secondindex;
+var thirdindex;
+
 var product1;
 var product2;
 var product3;
@@ -19,6 +24,7 @@ function Products(nameOfProducts, link) {
     this.timesDisplay = 0;
     allProducts.push(this);
 }
+
 // console.log(allProducts);
 new Products('banana', 'images/banana.jpg');
 new Products('bathroom', 'images/bathroom.jpg');
@@ -39,10 +45,12 @@ new Products('usb', 'images/usb.gif');
 new Products('water', 'images/water-can.jpg');
 new Products('wine', 'images/wine-glass.jpg');
 // random index for a product, will be from the above array that conatin all the objects below ..
+
+
 function randomProductsindex() {
-    var firstindex = Math.floor(Math.random() * allProducts.length); //0 ...  1......2  ....17.....18
-    var secondindex = Math.floor(Math.random() * allProducts.length);
-    var thirdindex = Math.floor(Math.random() * allProducts.length);
+    firstindex = Math.floor(Math.random() * allProducts.length); //0 ...  1......2  ....17.....18
+    secondindex = Math.floor(Math.random() * allProducts.length);
+    thirdindex = Math.floor(Math.random() * allProducts.length);
     while (firstindex === secondindex || firstindex === thirdindex || secondindex === thirdindex) {
         firstindex = Math.floor(Math.random() * allProducts.length); // to pick a random image for the products (pick its index)
         secondindex = Math.floor(Math.random() * allProducts.length);
@@ -50,23 +58,38 @@ function randomProductsindex() {
         console.log(firstindex, secondindex, thirdindex);
     }
     displayProducts(firstindex, secondindex, thirdindex); // to pass the indices to the function below ....
+    // product1 = allProducts[firstindex];  // Here we got our random product`s index from the above array ...(allProducts=[....])
+    // product2 = allProducts[secondindex];
+    // product3 = allProducts[thirdindex];
+    // leftproductElement.setAttribute('src', product1.link);
+    // middleproductElement.setAttribute('src', product2.link);
+    // rightproductElement.setAttribute('src', product3.link);
 
 }
+
 function displayProducts(firstindex, secondindex, thirdindex) {
     product1 = allProducts[firstindex];  // Here we got our random product`s index from the above array ...(allProducts=[....])
     product2 = allProducts[secondindex];
     product3 = allProducts[thirdindex];
     leftproductElement.setAttribute('src', product1.link);
-
     middleproductElement.setAttribute('src', product2.link);
     rightproductElement.setAttribute('src', product3.link);
+    product1.timesDisplay++;
+    product2.timesDisplay++;
+    product3.timesDisplay++;
 }
+
 sectionImgs.addEventListener('click', votingCounts);
+
 function votingCounts(event) {
+    console.log(event.target);
+
     if (event.target.id === 'firstproduct') {
         product1.votes++;
+        
         randomProductsindex();
         totalClicks++;
+
     } else if (event.target.id === 'secondtproduct') {
         product2.votes++;
         randomProductsindex();
@@ -76,24 +99,27 @@ function votingCounts(event) {
         randomProductsindex();
         totalClicks++;
     }
-    if (totalClicks >= 25) {
+    if (totalClicks === 25) {
         sectionImgs.removeEventListener('click', votingCounts);
         displyResult();
     }
-}
-function displyResult() {
-    var i;
-    for (i = 0; i < allProducts.length; i++) {
-        var listItem = createElement('li');
-        listItem.textcontent =
-            'Dispaly Times for ' + allProducts[i].nameOfProducts + ' is ' + allProducts[i].timesDisplay + ' and votes are : ' + allProducts[i].votes + '.';
-        resultLists.appendChild(listItem);
 
+}
+
+
+function displyResult() {
+
+    // var resultLists=document.getElementById("results")
+    for (var i = 0; i < allProducts.length; i++) {
+
+        var listItem = document.createElement('li');
+        resultLists.appendChild(listItem);
+        listItem.textContent = 'Dispaly Times for ' + allProducts[i].nameOfProducts + ' is ' + allProducts[i].timesDisplay + ' and votes are : ' + allProducts[i].votes + '.';
+        
     }
 }
 randomProductsindex();
-votingCounts();
-displayProducts();
+
 
 
 // console.log(leftproductElement, middleproductElement, rightproductElement);
