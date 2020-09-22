@@ -2,7 +2,10 @@
 
 // create a constructor : 
 var allProducts = [];
-
+// will create two functions 
+// to save votes and display times  ( will use json.srtingify ( main array ))
+// this function will bring the data 
+// JOSN.parse. ()
 var leftproductElement = document.getElementById('firstproduct');
 var middleproductElement = document.getElementById('secondtproduct');
 var rightproductElement = document.getElementById('thirdproduct');
@@ -29,10 +32,18 @@ function Products(nameOfProducts, link) {
     this.votes = 0;
     this.timesDisplay = 0;
     allProducts.push(this);
+    localStorage.setItem('allproducts', Products.arr);
+
+}
+Products.arr = [];
+function votesAndTimesDisplay (){
+    var productobjcts = JSON.stringify(allProducts);
+    console.log(productobjcts);
 }
 
-
-new Products('banana', 'images/banana.jpg');
+var productsObj = new Products('banana', 'images/banana.jpg');
+var jsonObject = JSON.stringify(productsObj);
+console.log(jsonObject);
 new Products('bathroom', 'images/bathroom.jpg');
 new Products('boots', 'images/boots.jpg');
 new Products('breakfast', 'images/breakfast.jpg');
@@ -61,20 +72,23 @@ function randomProductsindex() {
     //  to prevent repaeting images in 2 iteration 
 
 
-    while (firstindex === secondindex || firstindex === thirdindex || secondindex === thirdindex) {
+    while (firstindex === secondindex || firstindex === thirdindex || secondindex === thirdindex || secondIteration.includes(firstindex) || secondIteration.includes(secondindex) || secondIteration.includes(thirdindex)) {
         console.log('checking first index with the first iteration');
-        while (firstindex === secondIteration[0] || secondindex === secondIteration[1] || thirdindex === secondIteration[2]) {
-            firstindex = Math.floor(Math.random() * allProducts.length);
-            console.log('checking 111');
-            secondindex = Math.floor(Math.random() * allProducts.length);
-            console.log('checking 222');
-            thirdindex = Math.floor(Math.random() * allProducts.length);
-            console.log('checking 333');
-        }
+
+        firstindex = Math.floor(Math.random() * allProducts.length);
+        console.log('checking 111');
+        secondindex = Math.floor(Math.random() * allProducts.length);
+        console.log('checking 222');
+        thirdindex = Math.floor(Math.random() * allProducts.length);
+        console.log('checking 333');
     }
-    displayProducts(firstindex, secondindex, thirdindex); // to pass the indices to the function below ....
+
+displayProducts(firstindex, secondindex, thirdindex); // to pass the indices to the function below ....
 
 }
+
+
+
 
 // if (firstIteration.includes(firstindex)) {
 //     firstindex = Math.floor(Math.random() * allProducts.length); // to pick a random image for the products (pick its index)
@@ -93,9 +107,9 @@ function displayProducts(firstindex, secondindex, thirdindex) {
     product2 = allProducts[secondindex];
     product3 = allProducts[thirdindex];
 
-    secondIteration.push(product1);
-    secondIteration.push(product2);
-    secondIteration.push(product3);
+    secondIteration[0] = product1;
+    secondIteration[1] = product2;
+    secondIteration[2] = product3;
 
     leftproductElement.setAttribute('src', product1.link);
     middleproductElement.setAttribute('src', product2.link);
@@ -187,7 +201,7 @@ function chart() {
                 label: 'Votes Counts',
                 backgroundColor: 'rgb(100, 120, 90)',
                 borderColor: 'rgb(255, 99, 132)',
-                data: chartvotes,
+                data: chartvotes, 
             },
             {
                 label: 'Times Display',
